@@ -3,7 +3,7 @@ Docker Registry
 
 ####Exercise:
 
-We want to have an own Docker Registry to be able to host our docker images installed in a virtual machine.
+We want to have an own Docker Registry to be able to host our docker images. In order to experiment with the registry, we need to have it installed in a virtual machine.
 
 ####Acceptance criteria:
 
