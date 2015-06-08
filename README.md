@@ -14,7 +14,7 @@ We want to have an own Docker Registry to be able to host our docker images inst
 
 ####Hints:
 - you can also use the following iso_url: "http://releases.ubuntu.com/14.04/ubuntu-14.04.2-server-amd64.iso"
-- the iso_checksum is ca2531b8cd79ea5b778ede3a524779b9
+- the iso_checksum is 83aabd8dcf1e8f469f3c72fff2375195
 - choose freely your favourite packer-provisioner (chef for example)
 - you can use the preseed in the http directory if you want
 
