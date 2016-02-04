@@ -1,0 +1,82 @@
+{
+  "variables": {
+    "ssh_name": "weltn24",
+    "ssh_pass": "weltn24",
+    "vm_name": "weltn24-docker-registry",
+    "hostname": "weltn24-docker-registry",
+    "output_directory": "output-virtualbox-iso"
+  },
+  "provisioners": [
+    {
+      "type": "shell",
+      "pause_before": "10s",
+      "scripts": [
+        "scripts/root_setup.sh"
+      ]
+    },
+    {
+      "type": "shell",
+      "scripts": [
+        "scripts/setup.sh"
+      ]
+    }
+  ],
+  "builders": [
+    {
+      "type": "virtualbox-iso",
+      "boot_command": [
+        "<esc><esc><enter><wait>",
+        "/install/vmlinuz noapic preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg <wait>",
+        "debian-installer=en_US auto locale=en_US kbd-chooser/method=us <wait>",
+        "netcfg/get_hostname={{user `hostname` }} <wait>",
+        "fb=false debconf/frontend=noninteractive <wait>",
+        "keyboard-configuration/modelcode=SKIP keyboard-configuration/layout=USA keyboard-configuration/variant=USA console-setup/ask_detect=false <wait>",
+        "initrd=/install/initrd.gz -- <enter><wait>"
+      ],
+      "boot_wait": "10s",
+      "vm_name": "{{user `vm_name`}}",
+      "guest_os_type": "Ubuntu_64",
+      "http_directory": "http",
+      "iso_checksum": "9e5fecc94b3925bededed0fdca1bd417",
+      "iso_checksum_type": "md5",
+      "iso_url": "http://releases.ubuntu.com/14.04/ubuntu-14.04.3-server-amd64.iso",
+      "ssh_username": "{{ user `ssh_name`}}",
+      "ssh_password": "{{ user `ssh_pass`}}",
+      "ssh_port": 22,
+      "ssh_wait_timeout": "10000s",
+      "shutdown_command": "echo 'shutdown -P now' > /tmp/shutdown.sh; echo {{user `ssh_pass`}}|sudo -S sh '/tmp/shutdown.sh'",
+      "guest_additions_path": "VBoxGuestAdditions_{{.Version}}.iso",
+      "headless": false,
+      "virtualbox_version_file": ".vbox_version",
+      "output_directory": "{{user `output_directory`}}",
+      "vboxmanage": [
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--memory",
+          "1024"
+        ],
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--cpus",
+          "1"
+        ]
+      ],
+     "disk_size" : 10000
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "only": ["virtualbox-iso"],
+      "execute_command": "echo '{{user `ssh_pass`}}' | {{.Vars}} sudo -E -S bash '{{.Path}}'",
+      "scripts": [
+        "scripts/apt_install.sh",
+        "scripts/docker_install.sh",
+        "scripts/docker_registry_install.sh",
+        "scripts/cleanup.sh"
+      ]
+    }
+  ]
+}
