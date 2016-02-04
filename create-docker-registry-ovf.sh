@@ -71,7 +71,7 @@ if [[ $VBOXINSTALLED = true ]] ; then
      echo "could not find OVF file in $OUTPUT_DIRECTORY" >&2
      exit 1
  fi
- VBoxManage unregistervm $VM_NAME --delete
+ VBoxManage list vms |grep $VM_NAME && VBoxManage unregistervm $VM_NAME --delete
  #VBoxManage closemedium disk $VM_NAME.vdi
  VBoxManage import $OVF_FILE
 fi
