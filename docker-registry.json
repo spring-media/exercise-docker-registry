@@ -78,5 +78,15 @@
         "scripts/cleanup.sh"
       ]
     }
+  ],
+  "post-processors": [
+    {
+      "type": "vagrant",
+      "only": ["virtualbox-iso"],
+      "keep_input_artifact": true,
+      "include": ["vagrant/metadata.json"],
+      "output": "{{user `vm_name`}}_virtualbox.box",
+      "vagrantfile_template": "vagrant/Vagrantfile.template"
+    }
   ]
 }
