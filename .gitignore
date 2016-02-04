@@ -1,4 +1,4 @@
-http/preseed.cfg.*
+http/preseed.cfg
 docker-registry-virtualbox/
 http/preseed.cfg
 output-virtualbox-iso/
