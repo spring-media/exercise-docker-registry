@@ -3,3 +3,5 @@ docker-registry-virtualbox/
 http/preseed.cfg
 output-virtualbox-iso/
 packer_cache/
+*.box
+*.ovf
