@@ -75,6 +75,7 @@
         "scripts/apt_install.sh",
         "scripts/docker_install.sh",
         "scripts/docker_registry_install.sh",
+	"scripts/vagrant.sh",
         "scripts/cleanup.sh"
       ]
     }
@@ -85,7 +86,7 @@
       "only": ["virtualbox-iso"],
       "keep_input_artifact": true,
       "include": ["vagrant/metadata.json"],
-      "output": "{{user `vm_name`}}_virtualbox.box",
+      "output": "vagrant/{{user `vm_name`}}_virtualbox.box",
       "vagrantfile_template": "vagrant/Vagrantfile.template"
     }
   ]
