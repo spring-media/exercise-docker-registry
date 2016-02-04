@@ -33,12 +33,14 @@ else
 fi
 
 if [[ "$VBOXINSTALLED" = true ]] ; then
+ echo "checking for registered and running VirtualBox vms named $VM_NAME ..."
+ VBoxManage list runningvms |grep $VM_NAME && VBoxManage controlvm $VM_NAME poweroff
  VBoxManage list vms |grep $VM_NAME && VBoxManage unregistervm $VM_NAME --delete
 fi
 
 TIMESTAMP=$(date +%F-%s)
 # move any existing preseed file out of the way
-[[ -f "$PRESEED_FILE" ]] && mv $PRESEED_FILE ${PRESEED_FILE}.$TIMESTAMP
+[[ -f "$PRESEED_FILE" ]] && rm $PRESEED_FILE
 
 # generate preseed file, replace variables with env variables
 eval "$(cat $PRESEED_TEMPLATE| sed 's/"/+++/g'|sed 's/^\(.*\)$/echo "\1"/')" |sed 's/+++/"/g'|sed 's;\\";";g' > $PRESEED_FILE
