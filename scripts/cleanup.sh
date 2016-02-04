@@ -1,5 +1,8 @@
 #!/bin/bash
 
+echo "cleaning up guest additions"
+rm -rf VBoxGuestAdditions_*.iso VBoxGuestAdditions_*.iso.?
+
 echo "cleaning apt cache"
 apt-get autoremove
 apt-get clean
