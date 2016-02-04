@@ -15,6 +15,10 @@ HOSTNAME="weltn24-docker-registry"
 HTTP_DIR=./http
 PRESEED_FILE=$HTTP_DIR/preseed.cfg
 PRESEED_TEMPLATE=$HTTP_DIR/preseed.cfg.template
+START_VIRTUALBOX_LOCALLY=true
+
+# Static IP for VirtualBox host-only networking on eth1 (eth0 is dhcp, NAT)
+IP_ADDRESS=192.168.56.101
 
 
 #######################################
@@ -22,9 +26,15 @@ PRESEED_TEMPLATE=$HTTP_DIR/preseed.cfg.template
 #######################################
 PACKER_LOG=YES
 
+# setup provisioning script creates eth1 for host-only or bridged networking in VirtualBox
+NETWORK="${IP_ADDRESS%.*}.0"
+BROADCAST="${IP_ADDRESS%.*}.255"
+sed -e "s/__IP_ADDRESS__/$IP_ADDRESS/" -e "s/__NETWORK__/$NETWORK/" -e "s/__BROADCAST__/$BROADCAST/" -e "s/__USERNAME__/$USERNAME/" scripts/setup.sh.template >scripts/setup.sh
+exit
 hash VBoxManage
+[[ $? -eq 0 ]] HAS_VBOX=true
 
-if [[ $? -eq 0 ]] ;then
+if [[ "$HAS_VBOX" = true ]] && [[ "$START_VIRTUALBOX_LOCALLY" = true ]] ;then
     echo "VirtualBox is installed locally. The generated OVF will be imported after creation"
     VBOXINSTALLED=true
 else
@@ -32,10 +42,10 @@ else
     VBOXINSTALLED=false
 fi
 
-if [[ "$VBOXINSTALLED" = true ]] ; then
- echo "checking for registered and running VirtualBox vms named $VM_NAME ..."
- VBoxManage list runningvms |grep $VM_NAME && VBoxManage controlvm $VM_NAME poweroff
- VBoxManage list vms |grep $VM_NAME && VBoxManage unregistervm $VM_NAME --delete
+if [[ "$HAS_VBOX" = true ]] && [[ "$START_VIRTUALBOX_LOCALLY" = true ]] ;then
+ echo "stopping/removing any registered/running VirtualBox vm named: $VM_NAME"
+ VBoxManage list runningvms |grep $VM_NAME && VBoxManage controlvm "$VM_NAME" poweroff
+ VBoxManage list vms |grep $VM_NAME && VBoxManage unregistervm "$VM_NAME" --delete
 fi
 
 TIMESTAMP=$(date +%F-%s)
@@ -73,9 +83,9 @@ if [[ $VBOXINSTALLED = true ]] ; then
      echo "could not find OVF file in $OUTPUT_DIRECTORY" >&2
      exit 1
  fi
- VBoxManage list vms |grep $VM_NAME && VBoxManage unregistervm $VM_NAME --delete
- #VBoxManage closemedium disk $VM_NAME.vdi
+ VBoxManage list vms |grep $VM_NAME && VBoxManage unregistervm "$VM_NAME" --delete
  VBoxManage import $OVF_FILE
+ VBoxManage startvm "$VM_NAME" --type headless
 fi
 #vagrant box remove vagrant_machine || true
 #vagrant box add vagrant_machine packer/packer_virtualbox_virtualbox.box

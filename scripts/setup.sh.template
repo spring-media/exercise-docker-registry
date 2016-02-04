@@ -2,12 +2,14 @@
 
 echo "UseDNS no" >> /etc/ssh/sshd_config
 
+sudo usermod -aG sudo __USERNAME__
+
 cat << EOF >/etc/network/interfaces
 # The host-only network interface
 auto eth1
 iface eth1 inet static
-address 192.168.56.101
+address __IP_ADDRESS__
 netmask 255.255.255.0
-network 192.168.56.0
-broadcast 192.168.56.255
+network __NETWORK__
+broadcast __BROADCAST__
 EOF

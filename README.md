@@ -1,11 +1,57 @@
 Docker Registry
 ===============
 
-####Exercise:
+##### Submitter:
 
-We want to have an own Docker Registry to be able to host our docker images. In order to experiment with the registry, we need to have it installed in a virtual machine.
+Jonathan Colby
 
-####Acceptance criteria:
+
+
+
+####Methodology:
+
+My approach to solve this exercise:
+
+- Use [Packer](https://packer.io/) to create 2 vm types:
+  - VirtualBox OVF file
+  - Vagrant box
+- The vms are created using the packer **virtualbox-iso** builder, based on the ubuntu-14.04.3-server-amd64 ISO
+- Docker is installed on the vm ([docs.docker.com](https://docs.docker.com/engine/installation/ubuntulinux/)
+- The "official" [Docker Registry project](https://github.com/docker/distribution/blob/master/docs/deploying.md) is used as the registry.
+- Because of simplicity and speed of implementation, configuration/provisioning is done with Bash Shell scripts. Although I could rewrite them in Puppet if requested. 
+
+####Project Structure
+
+	.
+	├── LICENSE
+	├── README.md
+	├── create-docker-registry-ovf.sh (main script)
+	├── docker-registry.json  (packer json template)
+	├── http
+	│   ├── preseed.cfg.orig
+	│   └── preseed.cfg.template (template for preseeding)
+	├── output-virtualbox-iso/ (OVF output directory)
+	├── scripts/ (provisioning shell scripts)
+	│   ├── apt_install.sh
+	│   ├── cleanup.sh
+	│   ├── docker_install.sh
+	│   ├── docker_registry_install.sh
+	│   ├── docker_service.sh
+	│   ├── setup.sh
+	│   └── vagrant.sh
+	└── vagrant (Vagrant BOX output directory)
+    	├── Vagrantfile.template
+	
+
+
+####Installing
+
+Clone the git repo.
+
+
+
+
+####Tech Notes:
 
 - built registry image can be run locally on virtualbox
 - an image for the registry is build with [packer.io](https://packer.io/)

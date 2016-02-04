@@ -16,3 +16,6 @@ sudo apt-get purge lxc-docker
 # install docker and some useful packages
 DEBIAN_FRONTEND=noninteractive sudo apt-get -y install linux-image-extra-$(uname -r)
 DEBIAN_FRONTEND=noninteractive sudo apt-get -y install docker-engine
+
+# for mounting from the container
+sudo mkdir -p /var/lib/registry/data

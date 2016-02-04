@@ -1,4 +1,5 @@
 http/preseed.cfg
+scripts/setup.sh
 docker-registry-virtualbox/
 http/preseed.cfg
 output-virtualbox-iso/
