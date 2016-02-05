@@ -87,6 +87,7 @@ if [[ $VBOXINSTALLED = true ]] ; then
  VBoxManage import $OVF_FILE
  VBoxManage startvm "$VM_NAME" --type headless
 fi
-#vagrant box remove vagrant_machine || true
-#vagrant box add vagrant_machine packer/packer_virtualbox_virtualbox.box
+
+vagrant box remove $VM_NAME -f
+vagrant box add --name vagrant/$VM_NAME $VM_NAME_virtualbox.box
 

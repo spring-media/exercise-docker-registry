@@ -52,6 +52,11 @@
     }
   ],
   "provisioners": [
+     {
+      "type": "file",
+      "source": "certs",
+      "destination": "/"
+    },
     {
       "type": "shell",
       "pause_before": "10s",
