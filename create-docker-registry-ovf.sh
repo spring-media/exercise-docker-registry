@@ -35,7 +35,7 @@ PACKER_LOG=YES
 PRESEED_FILE=$HTTP_DIR/preseed.cfg
 PRESEED_TEMPLATE=$HTTP_DIR/preseed.cfg.template
 
-# Static IP for VirtualBox interface eth1 (eth0 is dhcp, NAT)
+# Static IP for VirtualBox interface on eth1
 IP_ADDRESS=192.168.56.101
 
 # setup provisioning script creates eth1 for host-only or bridged networking in VirtualBox
