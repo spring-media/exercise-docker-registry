@@ -37,7 +37,7 @@ My approach to solve this exercise:
 	│   ├── docker_install.sh
 	│   ├── docker_registry_install.sh
 	│   ├── docker_service.sh
-	│   ├── setup.sh
+	│   ├── setup.sh.template
 	│   └── vagrant.sh
 	└── vagrant (Vagrant BOX output directory)
     	├── Vagrantfile.template
@@ -64,34 +64,62 @@ My approach to solve this exercise:
     
 4. The build process will download the Ubuntu ISO the first time it runs.  This may take a while.  Also, the Docker Registry image will be downloaded from the internet (see methodology above)
 
-5. If `START_VIRTUALBOX_LOCALLY` is set to `true`, then the created VirtualBox image will be started on your local VirtualBox.  **Note**, it is your responsiblility to setup VirtualBox networking.  The interface eth1 was created with a static IP address, to use for host-only networking, for example.
+5. If `START_VIRTUALBOX_LOCALLY` is set to `true`, then the created VirtualBox image will be started on your local VirtualBox.  **Note**, it is your responsiblility to setup VirtualBox networking.  The VirtualBox images has 2 interfaces, eth0,eth1 (with a static IP address)
 
 6. The generated images are saved to:  `output-virtualbox-iso` and `vagrant`
 	
 
+#####Running Vagrant
+
+	cd vagrant
+	vagrant box add --name weltn24-docker-registry weltn24-docker-registry_virtualbox.box
+	vagrant init
+	
+Edit Vagrantfile: 
+	
+	config.vm.box = "weltn24-docker-registry"
+	config.vm.network "private_network", ip: "192.168.33.33" (example)	
+
+Login:
+
+	vagrant ssh
+	
+Docker Registry should be running:
+
+	root@weltn24-docker-registry:~# docker ps
+	CONTAINER ID        IMAGE               COMMAND             	CREATED             STATUS              PORTS    NAMES
+	2839f2bd5992        registry:latest     "docker-registry"   43 	minutes ago      Up 2 minutes        0.0.0.0:5000->5000/tcp   	registry
+	
+The registry is accessible at:
+
+	http://192.168.33.33:5000/
+	(or the IP configured for Vagrant)
+	
+
+####Running VirtualBox
+
+
+
+
+####Testing the Docker Registry
+
+pull an image locally:
+
+	docker pull ubuntu
+
+tag the image
+
+	docker tag ubuntu 192.168.33.33:5000/weltn24
+	
+
 
 	
 
 
-
-
-
-
 ####Tech Notes:
 
-- built registry image can be run locally on virtualbox
-- an image for the registry is build with [packer.io](https://packer.io/)
-- basis OS for the virtual machine should be an ubuntu 14.04 LTS
-- short documentation how to install it
 
-####Hints:
-- you can also use the following iso_url: [ubuntu_14.04](http://releases.ubuntu.com/14.04/ubuntu-14.04.3-server-amd64.iso)
-- choose freely your favourite packer-provisioner (chef for example)
-- you can use the preseed in the http directory if you want
-- commit frequently so we can see how you have approached the problem
 
-####How to contribute your solution:
 
-1. Fork the repo
-2. Commit everything that you do in your fork
-3. Create a pull request with your solution. Your pull request should include all source code which you used to create your solution.
+
+

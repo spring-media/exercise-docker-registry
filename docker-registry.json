@@ -64,7 +64,6 @@
         "scripts/docker_registry_install.sh",
 	"scripts/vagrant.sh",
         "scripts/cleanup.sh",
-	"scripts/docker_service.sh"
       ]
     }
   ],

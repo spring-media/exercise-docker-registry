@@ -4,5 +4,6 @@
 
 docker pull registry
 
-# start container (will be managed by upstart after reboot)
+# start container with restart policy
+# https://docs.docker.com/engine/articles/host_integration/
 docker run -d -p 5000:5000 --restart=always --name registry -v /var/lib/registry/data:/var/lib/registry registry:latest
