@@ -113,6 +113,6 @@ if [[ $VBOXINSTALLED = true ]] ; then
 fi
 
 if [[ "$HAS_VAGRANT" = true ]] ; then
-  vagrant box remove $VM_NAME -f
+  vagrant box list | grep $VM_NAME && vagrant box remove $VM_NAME -f
   vagrant box add --name $VM_NAME vagrant/${VM_NAME}_virtualbox.box
 fi
