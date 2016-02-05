@@ -1,6 +1,7 @@
 #!/bin/bash
 
-# this script
+# this script is the main control script for creating packer images
+# edit the variables below as needed and run the script
 
 #######################################
 # user defined variables
@@ -16,15 +17,17 @@ HTTP_DIR=./http
 PRESEED_FILE=$HTTP_DIR/preseed.cfg
 PRESEED_TEMPLATE=$HTTP_DIR/preseed.cfg.template
 START_VIRTUALBOX_LOCALLY=true
+INSECURE_REGISTRY=true
 
 # Static IP for VirtualBox host-only networking on eth1 (eth0 is dhcp, NAT)
 IP_ADDRESS=192.168.56.101
 
+# comment out to run packer in quite mode
+PACKER_LOG=YES
 
 #######################################
 # build script
 #######################################
-PACKER_LOG=YES
 
 # setup provisioning script creates eth1 for host-only or bridged networking in VirtualBox
 NETWORK="${IP_ADDRESS%.*}.0"
@@ -55,7 +58,12 @@ TIMESTAMP=$(date +%F-%s)
 # generate preseed file, replace variables with env variables
 eval "$(cat $PRESEED_TEMPLATE| sed 's/"/+++/g'|sed 's/^\(.*\)$/echo "\1"/')" |sed 's/+++/"/g'|sed 's;\\";";g' > $PRESEED_FILE
 
-#rm packer_virtualbox_virtualbox.box || true
+if [[ "$INSECURE_REGISTRY" = true ]] ; then
+  # create DOCKER_OPTS for insecure registry
+  echo 'sudo echo DOCKER_OPTS="--insecure-registry myregistrydomain.com:5000" >>/etc/default/docker' >>scripts/setup.sh
+fi
+
+sed -e "s/__INSECURE_REGISTRY__/$INSECURE_REGISTRY/" scripts/docker_registry_install.sh.template > scripts/docker_registry_install.sh
 
 # validate the packer json file
 packer validate $PACKER_JSON
@@ -89,5 +97,5 @@ if [[ $VBOXINSTALLED = true ]] ; then
 fi
 
 vagrant box remove $VM_NAME -f
-vagrant box add --name vagrant/$VM_NAME $VM_NAME_virtualbox.box
+vagrant box add --name $VM_NAME vagrant/${VM_NAME}_virtualbox.box
 

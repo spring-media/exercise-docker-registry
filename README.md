@@ -56,7 +56,7 @@ My approach to solve this exercise:
 
 1. Clone the git repo.
 
-2. Locate and open the file `create-docker-registry-ovf.sh`. This file contains variables which you may want to change. For example, `START_VIRTUALBOX_LOCALLY`, `IP_ADDRESS`,`USERNAME`,`PASSWORD`
+2. Locate and open the file `create-docker-registry-ovf.sh`. This file contains variables which you may want to change. For example, `START_VIRTUALBOX_LOCALLY`, `IP_ADDRESS`, `USERNAME`, `PASSWORD`, `INSECURE_REGISTRY`
 
 3. Run the script `create-docker-registry-ovf.sh`:
 	
@@ -68,6 +68,9 @@ My approach to solve this exercise:
 
 6. The generated images are saved to:  `output-virtualbox-iso` and `vagrant`
 	
+####Extra Configuration
+
+The Docker Registry runs in either INSECURE mode or with a self-signed 
 
 #####Running Vagrant
 
