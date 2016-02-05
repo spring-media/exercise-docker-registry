@@ -25,9 +25,6 @@ HTTP_DIR=./http
 START_VIRTUALBOX_LOCALLY=true
 # run the registry in insecure mode?
 INSECURE_REGISTRY=true
-# Static IP for VirtualBox interface eth1 (eth0 is dhcp, NAT)
-IP_ADDRESS=192.168.56.101
-
 # comment out to run packer in quite mode
 PACKER_LOG=YES
 
@@ -37,6 +34,9 @@ PACKER_LOG=YES
 
 PRESEED_FILE=$HTTP_DIR/preseed.cfg
 PRESEED_TEMPLATE=$HTTP_DIR/preseed.cfg.template
+
+# Static IP for VirtualBox interface eth1 (eth0 is dhcp, NAT)
+IP_ADDRESS=192.168.56.101
 
 # setup provisioning script creates eth1 for host-only or bridged networking in VirtualBox
 NETWORK="${IP_ADDRESS%.*}.0"
@@ -76,7 +76,7 @@ cp scripts/cleanup.sh.template scripts/cleanup.sh
 
 if [[ "$INSECURE_REGISTRY" = true ]] ; then
   # create DOCKER_OPTS for insecure registry
-  echo 'sudo echo DOCKER_OPTS="--insecure-registry myregistrydomain.com:5000" >>/etc/default/docker' >>scripts/cleanup.sh
+  echo 'sudo echo DOCKER_OPTS=\"--insecure-registry 0.0.0.0:5000\" >>/etc/default/docker' >>scripts/cleanup.sh
 fi
 
 sed -e "s/__INSECURE_REGISTRY__/$INSECURE_REGISTRY/" scripts/docker_registry_install.sh.template > scripts/docker_registry_install.sh

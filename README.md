@@ -56,7 +56,7 @@ My approach to solve this exercise:
 
 1. Clone the git repo.
 
-2. Locate and open the file `create-docker-registry-ovf.sh`. This file contains variables which you may want to change. For example, `START_VIRTUALBOX_LOCALLY`, `IP_ADDRESS`, `USERNAME`, `PASSWORD`, `INSECURE_REGISTRY`
+2. Locate and open the file `create-docker-registry-ovf.sh`. This file contains variables which you may want to change. For example, `START_VIRTUALBOX_LOCALLY`, `USERNAME`, `PASSWORD`, `INSECURE_REGISTRY`
 
 3. Run the script `create-docker-registry-ovf.sh`:
 	
@@ -64,7 +64,7 @@ My approach to solve this exercise:
     
 4. The build process will download the Ubuntu ISO the first time it runs.  This may take a while.  Also, the Docker Registry image will be downloaded from the internet (see methodology above)
 
-5. If `START_VIRTUALBOX_LOCALLY` is set to `true`, then the created VirtualBox image will be started on your local VirtualBox.  **Note**, it is your responsiblility to setup VirtualBox networking.  The VirtualBox images has 2 interfaces, eth0,eth1 (eth1 contains the static IP address)
+5. If `START_VIRTUALBOX_LOCALLY` is set to `true`, then the created VirtualBox image will be started on your local VirtualBox.  **Note**, it is your responsiblility to setup VirtualBox networking. Using Vagrant makes network configuration much easier.
 
 6. The generated images are saved to:  `output-virtualbox-iso` and `vagrant`
 	
@@ -124,15 +124,15 @@ pull an image locally:
 
 tag the image
 
-	docker tag ubuntu 192.168.33.33:5000/weltn24
+	docker tag ubuntu <ip-address>:5000/weltn24
 	
 push the image
 
-	docker push 192.168.33.33:5000/weltn24
+	docker push <ip-address>:5000/weltn24
 
 pull it again
 
-	docker pull 192.168.33.33:5000/weltn24
+	docker pull <ip-address>:5000/weltn24
 	
 
 ####Tech Notes:
