@@ -11,14 +11,16 @@ sudo chmod 775 /certs
 # provisioner copies cert files here
 sudo cp /tmp/certs/* /certs/
 
+# this clashes with vagrant settings.
+# let the user manage connectivity when using VirtualBox
 ## append to add eth1
-cat << EOF >>/etc/network/interfaces
-# static ip
-auto eth1
-iface eth1 inet static
-address __IP_ADDRESS__
-netmask 255.255.255.0
-network __NETWORK__
-gateway __GATEWAY__
-broadcast __BROADCAST__
-EOF
+#cat << EOF >>/etc/network/interfaces
+## static ip
+#auto eth1
+#iface eth1 inet static
+#address __IP_ADDRESS__
+#netmask 255.255.255.0
+#network __NETWORK__
+#gateway __GATEWAY__
+#broadcast __BROADCAST__
+#EOF
