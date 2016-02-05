@@ -64,21 +64,33 @@ My approach to solve this exercise:
     
 4. The build process will download the Ubuntu ISO the first time it runs.  This may take a while.  Also, the Docker Registry image will be downloaded from the internet (see methodology above)
 
-5. If `START_VIRTUALBOX_LOCALLY` is set to `true`, then the created VirtualBox image will be started on your local VirtualBox.  **Note**, it is your responsiblility to setup VirtualBox networking.  The VirtualBox images has 2 interfaces, eth0,eth1 (with a static IP address)
+5. If `START_VIRTUALBOX_LOCALLY` is set to `true`, then the created VirtualBox image will be started on your local VirtualBox.  **Note**, it is your responsiblility to setup VirtualBox networking.  The VirtualBox images has 2 interfaces, eth0,eth1 (eth1 contains the static IP address)
 
 6. The generated images are saved to:  `output-virtualbox-iso` and `vagrant`
 	
-####Extra Configuration
+####TLS - Extra Configuration
 
-The Docker Registry runs in either INSECURE mode or with a self-signed 
+A Private Docker Registry should have TLS certificates installed and configured.
+
+For testing, it is possible to run the registry in either INSECURE mode or with a self-signed-certificate
+
+The flag `INSECURE_REGISTRY` can be used to set the registry VM to un insecurely (http).  **However, the docker client configuration must in both cases be updated**
+
+See here:
+
+[https://github.com/docker/distribution/blob/master/docs/insecure.md](https://github.com/docker/distribution/blob/master/docs/insecure.md)
 
 #####Running Vagrant
+
+The `create-docker-registry-ovf.sh` will attempt to add the vagrant image box if vagrant was detected.  
+
+The manual steps are:
 
 	cd vagrant
 	vagrant box add --name weltn24-docker-registry weltn24-docker-registry_virtualbox.box
 	vagrant init
 	
-Edit Vagrantfile: 
+Edit Vagrantfile to configure network settings: 
 	
 	config.vm.box = "weltn24-docker-registry"
 	config.vm.network "private_network", ip: "192.168.33.33" (example)	
@@ -95,7 +107,7 @@ Docker Registry should be running:
 	
 The registry is accessible at:
 
-	http://192.168.33.33:5000/
+	http(s)://192.168.33.33:5000/
 	(or the IP configured for Vagrant)
 	
 

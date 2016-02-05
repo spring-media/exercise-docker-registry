@@ -72,6 +72,8 @@ TIMESTAMP=$(date +%F-%s)
 # generate preseed file, replace variables with env variables
 eval "$(cat $PRESEED_TEMPLATE| sed 's/"/+++/g'|sed 's/^\(.*\)$/echo "\1"/')" |sed 's/+++/"/g'|sed 's;\\";";g' > $PRESEED_FILE
 
+cp scripts/cleanup.sh.template scripts/cleanup.sh
+
 if [[ "$INSECURE_REGISTRY" = true ]] ; then
   # create DOCKER_OPTS for insecure registry
   echo 'sudo echo DOCKER_OPTS="--insecure-registry myregistrydomain.com:5000" >>/etc/default/docker' >>scripts/cleanup.sh
