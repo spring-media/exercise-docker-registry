@@ -17,7 +17,7 @@ My approach to solve this exercise:
   - Vagrant box
 - The vms are created using the packer **virtualbox-iso** builder, based on the ubuntu-14.04.3-server-amd64 ISO
 - Docker is installed on the vm ([docs.docker.com](https://docs.docker.com/engine/installation/ubuntulinux/)
-- The "official" [Docker Registry project](https://github.com/docker/distribution/blob/master/docs/deploying.md) is used as the registry.
+- The "official" [Docker Registry project](https://github.com/docker/distribution/blob/master/docs/deploying.md) is used as the registry (registry:2 image).
 - Because of simplicity and speed of implementation, configuration/provisioning is done with Bash Shell scripts. Although I could rewrite them in Puppet if requested. 
 
 ####Project Structure
@@ -58,13 +58,14 @@ My approach to solve this exercise:
 
 2. Locate and open the file `create-docker-registry-ovf.sh`. This file contains variables which you may want to change. For example, `START_VIRTUALBOX_LOCALLY`, `USERNAME`, `PASSWORD`, `INSECURE_REGISTRY`
 
-3. Run the script `create-docker-registry-ovf.sh`:
+3. If `START_VIRTUALBOX_LOCALLY` is set to `true`, then the created VirtualBox image will be started on your local VirtualBox.  **Note**, it is left to the user to setup VirtualBox networking. Using Vagrant makes network configuration much easier.
+
+
+4. Run the script `create-docker-registry-ovf.sh`:
 	
     ./create-docker-registry-ovf.sh
     
-4. The build process will download the Ubuntu ISO the first time it runs.  This may take a while.  Also, the Docker Registry image will be downloaded from the internet (see methodology above)
-
-5. If `START_VIRTUALBOX_LOCALLY` is set to `true`, then the created VirtualBox image will be started on your local VirtualBox.  **Note**, it is your responsiblility to setup VirtualBox networking. Using Vagrant makes network configuration much easier.
+5. The build process will download the Ubuntu ISO the first time it runs.  This may take a while.  Also, the Docker Registry image will be downloaded from the internet (see methodology above)
 
 6. The generated images are saved to:  `output-virtualbox-iso` and `vagrant`
 	
