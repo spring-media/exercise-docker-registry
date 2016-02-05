@@ -7,7 +7,7 @@ docker pull registry:2
 # start container with restart policy
 # https://docs.docker.com/engine/articles/host_integration/
 
-if [[ "__INSECURE_REGISTRY__" = true ]] ; then
+if [[ "__INSECURE_MODE__" = true ]] ; then
 
 docker run -d -p 5000:5000 --restart=always --name registry \
     -v /var/lib/registry/data:/var/lib/registry \
