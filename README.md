@@ -111,14 +111,23 @@ tag the image
 
 	docker tag ubuntu 192.168.33.33:5000/weltn24
 	
+push the image
 
+	docker push 192.168.33.33:5000/weltn24
 
+pull it again
+
+	docker pull 192.168.33.33:5000/weltn24
 	
-
 
 ####Tech Notes:
 
-
+ - docker container is started/restarted with the docker restart policy feature (another option would be supervisord or even upstart)
+ - The registry runs in TLS mode with self-signed certificates
+ - The registry storage volume is a local mount on the vm docker-host
+ - The registry runs without access restrictions (no authorization)
+ 
+ 
 
 
 

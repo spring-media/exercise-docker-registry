@@ -4,6 +4,10 @@ echo "UseDNS no" >> /etc/ssh/sshd_config
 
 sudo usermod -aG sudo __USERNAME__
 
+sudo mkdir /certs
+
+sudo chmod 775 /certs
+
 ## append to add eth1
 #cat << EOF >>/etc/network/interfaces
 ## The host-only network interface
