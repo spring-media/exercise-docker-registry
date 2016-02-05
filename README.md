@@ -43,10 +43,36 @@ My approach to solve this exercise:
     	├── Vagrantfile.template
 	
 
+####System Requirements
+
+- Internet connectivity
+- A recent packer version (developed with 0.8.6, install with Homebrew)
+- VirtualBox
+- (optional) Vagrant
+- git
+- terminal program
 
 ####Installing
 
-Clone the git repo.
+1. Clone the git repo.
+
+2. Locate and open the file `create-docker-registry-ovf.sh`. This file contains variables which you may want to change. For example, `START_VIRTUALBOX_LOCALLY`, `IP_ADDRESS`,`USERNAME`,`PASSWORD`
+
+3. Run the script `create-docker-registry-ovf.sh`:
+	
+    ./create-docker-registry-ovf.sh
+    
+4. The build process will download the Ubuntu ISO the first time it runs.  This may take a while.  Also, the Docker Registry image will be downloaded from the internet (see methodology above)
+
+5. If `START_VIRTUALBOX_LOCALLY` is set to `true`, then the created VirtualBox image will be started on your local VirtualBox.  **Note**, it is your responsiblility to setup VirtualBox networking.  The interface eth1 was created with a static IP address, to use for host-only networking, for example.
+
+6. The generated images are saved to:  `output-virtualbox-iso` and `vagrant`
+	
+
+
+	
+
+
 
 
 

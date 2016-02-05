@@ -30,9 +30,9 @@ PACKER_LOG=YES
 NETWORK="${IP_ADDRESS%.*}.0"
 BROADCAST="${IP_ADDRESS%.*}.255"
 sed -e "s/__IP_ADDRESS__/$IP_ADDRESS/" -e "s/__NETWORK__/$NETWORK/" -e "s/__BROADCAST__/$BROADCAST/" -e "s/__USERNAME__/$USERNAME/" scripts/setup.sh.template >scripts/setup.sh
-exit
+
 hash VBoxManage
-[[ $? -eq 0 ]] HAS_VBOX=true
+[[ $? -eq 0 ]] && HAS_VBOX=true
 
 if [[ "$HAS_VBOX" = true ]] && [[ "$START_VIRTUALBOX_LOCALLY" = true ]] ;then
     echo "VirtualBox is installed locally. The generated OVF will be imported after creation"

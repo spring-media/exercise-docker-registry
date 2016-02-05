@@ -4,7 +4,9 @@ echo "UseDNS no" >> /etc/ssh/sshd_config
 
 sudo usermod -aG sudo __USERNAME__
 
-cat << EOF >/etc/network/interfaces
+# append to add eth1
+cat << EOF >>/etc/network/interfaces
+
 # The host-only network interface
 auto eth1
 iface eth1 inet static
